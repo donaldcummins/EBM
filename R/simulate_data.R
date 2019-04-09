@@ -23,7 +23,7 @@ SimStep <- function(Ad, Bd, Qd, Gamma0, G, n) {
   return(signal + noise)
 }
 
-SimData <- function(C, kappa, sigma, G, epsilon, n) {
+SimStepData <- function(C, kappa, sigma, G, epsilon, n) {
 
   # build matrices
   mats <- BuildABQ(C, kappa, sigma)
@@ -42,9 +42,8 @@ SimData <- function(C, kappa, sigma, G, epsilon, n) {
 
 }
 
-TransientResponse <- function(Ad, Bd, G, n) {
+TransientResponse <- function(Ad, Bd, alpha, n) {
   nboxes <- nrow(Ad)
-  alpha <- G/log(4)
   G <- alpha*log(1.01^(1:n))
   x <- matrix(0, nboxes, n + 1)
   for (i in 1:n) {
