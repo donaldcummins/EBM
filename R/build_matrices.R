@@ -17,7 +17,8 @@ BuildABQ <- function(C, kappa, sigma) {
 BuildAdBdQd <- function(A, B, Q) {
   nboxes <- nrow(A)
   Ad <- expm::expm(A)
-  Bd <- solve(A, (Ad - diag(nboxes)) %*% B)
+  # Bd <- solve(A, (Ad - diag(nboxes)) %*% B)
+  Bd <- pracma::pinv(A) %*% (Ad - diag(nboxes)) %*% B
   H <- rbind(cbind(-A, Q),
              cbind(matrix(0, nboxes, nboxes), t(A)))
   G <- expm::expm(H)
@@ -28,7 +29,8 @@ BuildAdBdQd <- function(A, B, Q) {
 
 BuildGamma0 <- function(Ad, Qd) {
   nboxes <- nrow(Ad)
-  Gamma0 <- solve(diag(nboxes^2) - kronecker(Ad, Ad), as.vector(Qd))
+  # Gamma0 <- solve(diag(nboxes^2) - kronecker(Ad, Ad), as.vector(Qd))
+  Gamma0 <- pracma::pinv(diag(nboxes^2) - kronecker(Ad, Ad)) %*% as.vector(Qd)
   return(matrix(Gamma0, nboxes))
 }
 
