@@ -12,6 +12,7 @@ FitKalman <- function(inits, temp, flux, maxeval = 100000) {
   if (opt$convergence < 0) {
     stop("Convergence failure!")
   }
+  cat("Success! Convergence achieved in", opt$iter, "iterations.")
 
   # extract parameter estimates
   mle <- opt$par
