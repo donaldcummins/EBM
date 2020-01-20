@@ -1,12 +1,19 @@
-BuildABQ <- function(C, kappa, sigma_xi) {
+BuildABQ <- function(C, kappa, epsilon, sigma_xi) {
   k <- length(C)
-  A <- matrix(0, k, k)
-  for (i in 1:(k - 1)) {
-    A[i, i] <- -(kappa[i] + kappa[i + 1])/C[i]
-    A[i, i + 1] <- kappa[i + 1]/C[i]
-    A[i + 1, i] <- kappa[i + 1]/C[i + 1]
+  if (k == 2) {
+    A <- rbind(
+      c(-(kappa[1] + epsilon*kappa[2])/C[1], epsilon*kappa[2]/C[1]),
+      c(kappa[2]/C[2], -kappa[2]/C[2])
+    )
+  } else if (k == 3) {
+    A <- rbind(
+      c(-(kappa[1] + kappa[2])/C[1], kappa[2]/C[1], 0),
+      c(kappa[2]/C[2], -(kappa[2] + epsilon*kappa[3])/C[2], epsilon*kappa[3]/C[2]),
+      c(0, kappa[3]/C[3], -kappa[3]/C[3])
+    )
+  } else {
+    stop("number of boxes k must be two or three")
   }
-  A[k, k] <- -kappa[k]/C[k]
   B <- matrix(0, k)
   B[1] <- 1/C[1]
   Q <- matrix(0, k, k)
@@ -34,8 +41,8 @@ BuildGamma0 <- function(Ad, Qd) {
   return(list(Gamma0 = Gamma0))
 }
 
-BuildMatrices <- function(C, kappa, sigma_xi) {
-  ABQ <- BuildABQ(C, kappa, sigma_xi)
+BuildMatrices <- function(C, kappa, epsilon, sigma_xi) {
+  ABQ <- BuildABQ(C, kappa, epsilon, sigma_xi)
   AdBdQd <- with(ABQ, BuildAdBdQd(A, B, Q))
   Gamma0 <- with(AdBdQd, BuildGamma0(Ad, Qd))
   return(c(ABQ, AdBdQd, Gamma0))
