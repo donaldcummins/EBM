@@ -1,46 +1,44 @@
-BuildABQ <- function(C, kappa, sigma) {
-  nboxes <- length(C)
-  A <- matrix(0, nboxes, nboxes)
-  for (i in 1:(nboxes - 1)) {
+BuildABQ <- function(C, kappa, sigma_xi) {
+  k <- length(C)
+  A <- matrix(0, k, k)
+  for (i in 1:(k - 1)) {
     A[i, i] <- -(kappa[i] + kappa[i + 1])/C[i]
     A[i, i + 1] <- kappa[i + 1]/C[i]
     A[i + 1, i] <- kappa[i + 1]/C[i + 1]
   }
-  A[nboxes, nboxes] <- -kappa[nboxes]/C[nboxes]
-  B <- matrix(0, nboxes)
+  A[k, k] <- -kappa[k]/C[k]
+  B <- matrix(0, k)
   B[1] <- 1/C[1]
-  Q <- matrix(0, nboxes, nboxes)
-  Q[1, 1] <- (sigma/C[1])^2
+  Q <- matrix(0, k, k)
+  Q[1, 1] <- (sigma_xi/C[1])^2
   return(list(A = A, B = B, Q = Q))
 }
 
 BuildAdBdQd <- function(A, B, Q) {
-  nboxes <- nrow(A)
+  k <- nrow(A)
   Ad <- expm::expm(A)
-  # Bd <- solve(A, (Ad - diag(nboxes)) %*% B)
-  Bd <- pracma::pinv(A) %*% (Ad - diag(nboxes)) %*% B
-  H <- rbind(cbind(-A, Q),
-             cbind(matrix(0, nboxes, nboxes), t(A)))
+  Bd <- solve(A, (Ad - diag(k)) %*% B)
+  H <- rbind(
+    cbind(-A, Q),
+    cbind(matrix(0, k, k), t(A))
+  )
   G <- expm::expm(H)
-  Qd <- t(G[(nboxes + 1):(2*nboxes), (nboxes + 1):(2*nboxes)]) %*%
-    G[1:nboxes, (nboxes + 1):(2*nboxes)]
+  Qd <- t(G[(k + 1):(2*k), (k + 1):(2*k)]) %*% G[1:k, (k + 1):(2*k)]
   return(list(Ad = Ad, Bd = Bd, Qd = Qd))
 }
 
 BuildGamma0 <- function(Ad, Qd) {
-  nboxes <- nrow(Ad)
-  # Gamma0 <- solve(diag(nboxes^2) - kronecker(Ad, Ad), as.vector(Qd))
-  Gamma0 <- pracma::pinv(diag(nboxes^2) - kronecker(Ad, Ad)) %*% as.vector(Qd)
-  return(matrix(Gamma0, nboxes))
+  k <- nrow(Ad)
+  Gamma0 <- solve(diag(k^2) - kronecker(Ad, Ad), as.vector(Qd))
+  Gamma0 <- matrix(Gamma0, k)
+  return(list(Gamma0 = Gamma0))
 }
 
-BuildMatrices <- function(C, kappa, sigma) {
-  mats <- BuildABQ(C, kappa, sigma)
-  dmats <- BuildAdBdQd(mats$A, mats$B, mats$Q)
-  Gamma0 <- BuildGamma0(dmats$Ad, dmats$Qd)
-  return(list(A = mats$A, B = mats$B, Q = mats$Q,
-              Ad = dmats$Ad, Bd = dmats$Bd, Qd = dmats$Qd,
-              Gamma0 = Gamma0))
+BuildMatrices <- function(C, kappa, sigma_xi) {
+  ABQ <- BuildABQ(C, kappa, sigma_xi)
+  AdBdQd <- with(ABQ, BuildAdBdQd(A, B, Q))
+  Gamma0 <- with(AdBdQd, BuildGamma0(Ad, Qd))
+  return(c(ABQ, AdBdQd, Gamma0))
 }
 
 
