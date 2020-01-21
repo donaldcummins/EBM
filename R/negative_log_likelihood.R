@@ -1,4 +1,4 @@
-KalmanNegLogLik <- function(par, dataset, k=2) {
+KalmanNegLogLik <- function(par, dataset) {
 
   # back-transform parameters
   p <- BackTransform(par)

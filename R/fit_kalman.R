@@ -1,9 +1,15 @@
-FitKalman <- function(inits, temp, flux, maxeval = 100000) {
+FitKalman <- function(inits, T1, N, maxeval = 100000) {
+
+  # transform to optimization domain
+  inits <- Transform(inits)
+  dataset <- rbind(T1, N)
 
   # minimize negative log-likelihood
-  opt <- nloptr::bobyqa(inits, KalmanNegLogLik,
-                        temp = temp, flux = flux,
-                        control = list(maxeval = maxeval))
+  opt <- nloptr::bobyqa(
+    x0 = inits,
+    fn = KalmanNegLogLik,
+    dataset = dataset,
+    control = list(maxeval = maxeval))
 
   # check convergence
   if (opt$iter == maxeval) {
@@ -18,37 +24,46 @@ FitKalman <- function(inits, temp, flux, maxeval = 100000) {
   mle <- opt$par
 
   # calculate covariance matrix
-  vcov <- solve(numDeriv::hessian(KalmanNegLogLik, opt$par,
-                                  temp = temp, flux = flux))
+  vcov <- solve(numDeriv::hessian(
+    func = KalmanNegLogLik,
+    x = mle,
+    dataset = dataset
+  ))
 
   # calculate standard errors
   se <- sqrt(diag(vcov))
 
   # calculate confidence intervals
-  confint <- rbind(mle - qnorm(0.975)*se,
-                   mle + qnorm(0.975)*se)
+  confint <- rbind(
+    mle - qnorm(0.975)*se,
+    mle + qnorm(0.975)*se
+  )
 
   # calculate AIC
   AIC <- 2*length(opt$par) + 2*opt$value
 
   # back-transform parameters
-  b <- BackTransform(mle)
+  p <- BackTransform(mle)
 
-  # calculate fitted values
-  fitted.values <- list(temp = StepResponse(b$Ad, b$Bd, b$G, length(temp)),
-                       flux = b$G - b$kappa[1]*temp)
-
-  # calculate residuals
-  residuals <- list(temp = temp - fitted.values$temp[1, ],
-                    flux = flux - fitted.values$flux)
+  # build matrices at mle
+  m <- with(p, BuildMatrices(gamma, C, kappa, epsilon, sigma_eta, sigma_xi))
 
   # run Kalman filter at mle
-  kf <- KalmanFilter(b$Ad, b$Bd, b$Qd, b$Gamma0, b$G, temp)
+  kf <- with(c(p, m), KalmanFilter(Ad, Bd, Qd, Gamma0, Cd, F_4xCO2, dataset))
 
-  # return list of output on log scale
-  return(list(mle = mle, se = se, confint = confint, vcov = vcov, AIC = AIC,
-              temp = temp, flux = flux, kf = kf,
-              fitted.values = fitted.values, residuals = residuals))
+  # return output
+  return(list(
+    mle = mle,
+    vcov = vcov,
+    se = se,
+    confint = confint,
+    AIC = AIC,
+    p = p,
+    m = m,
+    T1 = T1,
+    N = N,
+    kf = kf
+  ))
 
 }
 
