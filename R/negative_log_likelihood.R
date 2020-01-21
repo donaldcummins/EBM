@@ -1,27 +1,15 @@
-KalmanNegLogLik <- function(par, temp, flux) {
+KalmanNegLogLik <- function(par, dataset, k=2) {
 
   # back-transform parameters
-  par <- exp(par)
-
-  # extract parameters
-  nboxes <- as.integer((length(par) - 3)/2)
-  n <- length(temp)
-  C <- par[1:nboxes]
-  kappa <- par[(nboxes + 1):(2*nboxes)]
-  sigma <- par[2*nboxes + 1]
-  G <- par[2*nboxes + 2]
-  epsilon <- par[2*nboxes + 3]
+  p <- BackTransform(par)
 
   # build matrices
-  m <- BuildMatrices(C, kappa, sigma)
+  m <- with(p, BuildMatrices(gamma, C, kappa, epsilon, sigma_eta, sigma_xi))
 
   # run kalman filter
-  kf <- KalmanFilter(m$Ad, m$Bd, m$Qd, m$Gamma0, G, temp)
-
-  # log-likelihood for fluxes
-  fluxLogLik <- sum(dnorm(flux, G - kappa[1]*temp, epsilon, log = TRUE))
+  kf <- with(c(p, m), KalmanFilter(Ad, Bd, Qd, Gamma0, Cd, F_4xCO2, dataset))
 
   # return negative log-likelihood
-  return(-(kf$logLik + fluxLogLik))
+  return(-kf$logLik)
 
 }
