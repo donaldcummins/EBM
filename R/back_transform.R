@@ -1,5 +1,5 @@
 Transform <- function(p) {
-  log(unlist(p2))
+  log(unlist(p))
 }
 
 BackTransform <- function(par) {
