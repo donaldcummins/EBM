@@ -1,19 +1,20 @@
 StepResponse <- function(Ad, Bd, F_4xCO2, n) {
   k <- nrow(Ad)
   x <- matrix(0, k, n + 1)
+  x[1, 1] <- F_4xCO2
   for (i in 1:n) {
     x[, i + 1] <- Ad %*% x[, i] + Bd * F_4xCO2
   }
   return(x[, -1])
 }
 
-StepResponseAnalytic <- function(A, kappa, F_4xCO2, n) {
-  ones <- rep(1, nrow(A))
-  func <- function(t) {
-    F_4xCO2/kappa[1] * (ones - expm::expAtv(A, ones, t)$eAtv)
-  }
-  return(sapply(1:n, func))
-}
+# StepResponseAnalytic <- function(A, kappa, F_4xCO2, n) {
+#   ones <- rep(1, nrow(A))
+#   func <- function(t) {
+#     F_4xCO2/kappa[1] * (ones - expm::expAtv(A, ones, t)$eAtv)
+#   }
+#   return(sapply(1:n, func))
+# }
 
 SimNoise <- function(Ad, Qd, Gamma0, n) {
   k <- nrow(Ad)

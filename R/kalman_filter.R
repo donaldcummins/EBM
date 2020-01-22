@@ -3,8 +3,11 @@ KalmanFilter <- function(Ad, Bd, Qd, Gamma0, Cd, F_4xCO2, dataset) {
   # get dimension of state vector
   k <- nrow(Ad)
 
+  # set initial conditions (t=0)
+  x0 <- c(F_4xCO2, rep(0, k - 1))
+
   # Kalman filter parameters
-  a0 <- as.vector(Bd*F_4xCO2)
+  a0 <- as.vector(Ad %*% x0 + Bd*F_4xCO2) # first observation one year in
   P0 <- Gamma0
   dt <- Bd*F_4xCO2
   ct <- matrix(0, 2, 1)
