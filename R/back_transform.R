@@ -15,8 +15,18 @@ BackTransform <- function(par) {
       F_4xCO2 = par[9]
     )
     return(p)
+  } else if (length(par) == 11) {
+    p <- list(
+      gamma = par[1],
+      C = par[2:4],
+      kappa = par[5:7],
+      epsilon = par[8],
+      sigma_eta = par[9],
+      sigma_xi = par[10],
+      F_4xCO2 = par[11]
+    )
   } else {
-    stop("only k=2 implemented")
+    stop("k must be two or three")
   }
 }
 

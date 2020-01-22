@@ -38,8 +38,7 @@ SimStepData <- function(gamma, C, kappa, epsilon, sigma_eta, sigma_xi, F_4xCO2, 
 
   # generate data
   x <- with(m, SimStep(Ad, Bd, Qd, Gamma0, F_4xCO2, n))
-  k <- length(C)
-  y <- matrix(0, k, n)
+  y <- matrix(0, 2, n)
   for (i in 1:n) {
     y[, i] <- with(m, Cd %*% x[, i])
   }
