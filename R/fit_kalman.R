@@ -51,6 +51,9 @@ FitKalman <- function(inits, T1, N, maxeval = 100000) {
   # run Kalman filter at mle
   kf <- with(c(p, m), KalmanFilter(Ad, Bd, Qd, Gamma0, Cd, F_4xCO2, dataset))
 
+  # step response of fitted model
+  step <- with(c(p, m), StepResponse(Ad, Bd, F_4xCO2, 150))
+
   # return output
   return(list(
     mle = mle,
@@ -62,7 +65,8 @@ FitKalman <- function(inits, T1, N, maxeval = 100000) {
     m = m,
     T1 = T1,
     N = N,
-    kf = kf
+    kf = kf,
+    step = step
   ))
 
 }
