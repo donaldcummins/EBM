@@ -8,9 +8,10 @@ BuildABQ <- function(gamma, C, kappa, epsilon, sigma_eta, sigma_xi) {
     )
   } else if (k == 3) {
     A <- rbind(
-      c(-(kappa[1] + kappa[2])/C[1], kappa[2]/C[1], 0),
-      c(kappa[2]/C[2], -(kappa[2] + epsilon*kappa[3])/C[2], epsilon*kappa[3]/C[2]),
-      c(0, kappa[3]/C[3], -kappa[3]/C[3])
+      c(-gamma, 0, 0, 0),
+      c(1/C[1], -(kappa[1] + kappa[2])/C[1], kappa[2]/C[1], 0),
+      c(0, kappa[2]/C[2], -(kappa[2] + epsilon*kappa[3])/C[2], epsilon*kappa[3]/C[2]),
+      c(0, 0, kappa[3]/C[3], -kappa[3]/C[3])
     )
   } else {
     stop("number of boxes k must be two or three")
@@ -51,7 +52,12 @@ BuildCd <- function(kappa, epsilon) {
       c(1, -kappa[1] + (1 - epsilon)*kappa[2], -(1 - epsilon)*kappa[2])
     )
   } else if (k == 3) {
-    stop("k=3 not implemented yet")
+    Cd <- rbind(
+      c(0, 1, 0, 0),
+      c(1, -kappa[1], (1 - epsilon)*kappa[3], -(1 - epsilon)*kappa[3])
+    )
+  } else {
+    stop("k must be two or three")
   }
   return(list(Cd = Cd))
 }
