@@ -55,8 +55,8 @@ TransientResponseAnalytic <- function(A, kappa, F_4xCO2, n) {
   A <- A[-1, -1]
   k <- nrow(A)
   ones <- rep(1, k)
-  ts <- rep(t, k)
   func <- function(t) {
+    ts <- rep(t, k)
     log(1.01)/log(4) * F_4xCO2/kappa[1] *
       (ts - solve(A) %*% (expm::expm(A*t) - diag(k)) %*% ones)
   }
