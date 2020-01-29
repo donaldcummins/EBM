@@ -48,11 +48,24 @@ FitKalman <- function(inits, T1, N, maxeval = 100000) {
   # build matrices at mle
   m <- with(p, BuildMatrices(gamma, C, kappa, epsilon, sigma_eta, sigma_xi))
 
+  # calculate characteristic timescales
+  tau <- with(m, -1/eigen(A[-1, -1])$values)
+
   # run Kalman filter at mle
   kf <- with(c(p, m), KalmanFilter(Ad, Bd, Qd, Gamma0, Cd, F_4xCO2, dataset))
 
   # step response of fitted model
   step <- with(c(p, m), StepResponse(Ad, Bd, F_4xCO2, 150))
+
+  # transient response
+  transient <- with(c(p, m), TransientResponseAnalytic(A, kappa, F_4xCO2, 150))
+
+  # impulse response
+  impulse <- with(c(p, m), ImpulseResponseAnalytic(A, kappa, 0:150))
+
+  # ECS and TCR
+  ECS <- with(p, 0.5*F_4xCO2/kappa[1])
+  TCR <- transient[1, 70]
 
   # return output
   return(list(
@@ -63,10 +76,15 @@ FitKalman <- function(inits, T1, N, maxeval = 100000) {
     AIC = AIC,
     p = p,
     m = m,
+    tau = tau,
     T1 = T1,
     N = N,
     kf = kf,
-    step = step
+    step = step,
+    transient = transient,
+    impulse = impulse,
+    ECS = ECS,
+    TCR = TCR
   ))
 
 }

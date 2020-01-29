@@ -8,13 +8,14 @@ StepResponse <- function(Ad, Bd, F_4xCO2, n) {
   return(x[, -1])
 }
 
-# StepResponseAnalytic <- function(A, kappa, F_4xCO2, n) {
-#   ones <- rep(1, nrow(A))
-#   func <- function(t) {
-#     F_4xCO2/kappa[1] * (ones - expm::expAtv(A, ones, t)$eAtv)
-#   }
-#   return(sapply(1:n, func))
-# }
+StepResponseAnalytic <- function(A, kappa, F_4xCO2, n) {
+  A <- A[-1, -1]
+  ones <- rep(1, nrow(A))
+  func <- function(t) {
+    F_4xCO2/kappa[1] * (ones - expm::expAtv(A, ones, t)$eAtv)
+  }
+  return(sapply(1:n, func))
+}
 
 SimNoise <- function(Ad, Qd, Gamma0, n) {
   k <- nrow(Ad)
@@ -50,31 +51,26 @@ SimStepData <- function(gamma, C, kappa, epsilon, sigma_eta, sigma_xi, F_4xCO2, 
 
 }
 
-# TransientResponse <- function(Ad, Bd, alpha, n) {
-#   k <- nrow(Ad)
-#   G <- alpha*log(1.01^(1:n))
-#   x <- matrix(0, k, n + 1)
-#   for (i in 1:n) {
-#     x[, i + 1] <- Ad %*% x[, i] + Bd * G[i]
-#   }
-#   return(x[, -1])
-# }
-#
-# TransientResponseAnalytic <- function(A, kappa, G, n) {
-#   func <- function(t) {
-#     log(1.01)/log(4) * G/kappa[1] * (rep(t, nrow(A)) -
-#       solve(A) %*% (expm::expm(A*t) - diag(nrow(A))) %*% rep(1, nrow(A)))
-#   }
-#   return(sapply(1:n, func))
-# }
-#
-# ImpulseResponseAnalytic <- function(A, kappa, t) {
-#   ones <- rep(1, nrow(A))
-#   func <- function(t) {
-#     -1/kappa[1] * A %*% expm::expAtv(A, ones, t)$eAtv
-#   }
-#   return(sapply(t, func))
-# }
+TransientResponseAnalytic <- function(A, kappa, F_4xCO2, n) {
+  A <- A[-1, -1]
+  k <- nrow(A)
+  ones <- rep(1, k)
+  ts <- rep(t, k)
+  func <- function(t) {
+    log(1.01)/log(4) * F_4xCO2/kappa[1] *
+      (ts - solve(A) %*% (expm::expm(A*t) - diag(k)) %*% ones)
+  }
+  return(sapply(1:n, func))
+}
+
+ImpulseResponseAnalytic <- function(A, kappa, t) {
+  A <- A[-1, -1]
+  ones <- rep(1, nrow(A))
+  func <- function(t) {
+    -1/kappa[1] * A %*% expm::expAtv(A, ones, t)$eAtv
+  }
+  return(sapply(t, func))
+}
 
 
 
