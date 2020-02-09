@@ -48,6 +48,44 @@ SimStep <- function(Ad, Bd, Qd, Gamma0, F_4xCO2, n) {
   return(signal + noise)
 }
 
+#' Simulating k-box model abrupt 4xCO2 step responses
+#'
+#' \code{SimStepData} takes physical parameters of a k-box model and simulates
+#' the first n years of its response to an abrupt 4xCO2 forcing.
+#'
+#' @param gamma stochastic forcing correlation parameter.
+#' @param C vector of box heat capacities.
+#' @param kappa vector of heat transfer coefficients.
+#' @param epsilon deep ocean heat uptake efficacy factor.
+#' @param sigma_eta stochastic forcing standard deviation parameter.
+#' @param sigma_xi standard deviation of stochastic temperature disturbances.
+#' @param F_4xCO2 effective radiative forcing due to CO2 quadrupling.
+#' @param n length of simulation in years.
+#'
+#' @return \code{SimStepData} returns a matrix with two rows containing time
+#' series of global mean surface temperature and top-of-the-atmosphere net
+#' downward radiative flux respectively.
+#'
+#' @examples
+#' # set physical parameters
+#' parameters <- list(
+#'   gamma = 2.2,
+#'   C = c(7.0, 80.0),
+#'   kappa = c(1.2, 0.75),
+#'   epsilon = 1.2,
+#'   sigma_eta = 0.54,
+#'   sigma_xi = 0.72,
+#'   F_4xCO2 = 7.4,
+#'   n = 150
+#' )
+#'
+#' # simulate step response
+#' step <- with(parameters, {
+#'   SimStepData(gamma, C, kappa, epsilon, sigma_eta, sigma_xi, F_4xCO2, n)
+#' })
+#'
+#' # plot results
+#' plot.ts(t(step), main = "Simulated Step Response")
 SimStepData <- function(gamma, C, kappa, epsilon, sigma_eta, sigma_xi, F_4xCO2, n) {
 
   # build matrices

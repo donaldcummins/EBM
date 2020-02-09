@@ -24,8 +24,9 @@ BuildMatrices(gamma, C, kappa, epsilon, sigma_eta, sigma_xi)
 A, B, Q, Ad, Bd, Qd, Gamma0, Cd.
 }
 \description{
-\code{BuildMatrices} takes physical parameters of the differential equations and constructs
-continuous- and discrete-time model matrices.
+\code{BuildMatrices} takes physical parameters of the k-box model
+differential equations and constructs continuous- and discrete-time model
+matrices.
 }
 \examples{
 # set physical parameters
