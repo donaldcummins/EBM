@@ -93,6 +93,7 @@ BuildCd <- function(kappa, epsilon) {
 #' @return \code{BuildMatrices} returns a list containing k-box model matrices:
 #' A, B, Q, Ad, Bd, Qd, Gamma0, Cd.
 #' @export
+#' @seealso \code{\link{SimStepData}}, \code{\link{FitKalman}}.
 #'
 #' @examples
 #' # set physical parameters

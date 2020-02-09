@@ -53,3 +53,6 @@ step <- with(parameters, {
 # plot results
 plot.ts(t(step), main = "Simulated Step Response")
 }
+\seealso{
+\code{\link{BuildMatrices}}, \code{\link{FitKalman}}.
+}

@@ -47,3 +47,6 @@ matrices <- with(parameters, {
 # print output
 print(matrices)
 }
+\seealso{
+\code{\link{SimStepData}}, \code{\link{FitKalman}}.
+}

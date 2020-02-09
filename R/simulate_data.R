@@ -66,6 +66,7 @@ SimStep <- function(Ad, Bd, Qd, Gamma0, F_4xCO2, n) {
 #' series of global mean surface temperature and top-of-the-atmosphere net
 #' downward radiative flux respectively.
 #' @export
+#' @seealso \code{\link{BuildMatrices}}, \code{\link{FitKalman}}.
 #'
 #' @examples
 #' # set physical parameters

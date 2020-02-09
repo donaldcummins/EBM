@@ -7,7 +7,18 @@
 FitKalman(inits, T1, N, maxeval = 1e+05)
 }
 \arguments{
-\item{inits}{list of parameter starting values.}
+\item{inits}{list of parameter starting values containing the following
+elements:
+\itemize{
+  \item \code{gamma} - stochastic forcing correlation parameter;
+  \item \code{C} - vector of box heat capacities;
+  \item \code{kappa} - vector of heat transfer coefficients;
+  \item \code{epsilon} - deep ocean heat uptake efficacy factor;
+  \item \code{sigma_eta} - stochastic forcing standard deviation parameter;
+  \item \code{sigma_xi} - standard deviation of stochastic temperature
+  disturbances;
+  \item \code{F_4xCO2} - effective radiative forcing due to CO2 quadrupling.
+}}
 
 \item{T1}{time series of global mean surface temperature.}
 
@@ -16,7 +27,37 @@ FitKalman(inits, T1, N, maxeval = 1e+05)
 \item{maxeval}{maximum number of iterations in BOBYQA optimization algorithm.}
 }
 \value{
-\code{FitKalman} returns a list containing fitted model output.
+\code{FitKalman} returns a list containing the following elements:
+\itemize{
+  \item \code{mle} - vector of logged maximum likelihood parameter estimates;
+  \item \code{vcov} - approximate covariance matrix of estimated parameters;
+  \item \code{se} - vector of approximate standard errors of logged parameter
+  estimates;
+  \item \code{confint} - matrix with two rows containing lower and upper
+  bounds of approximate 95 percent confidence intervals for logged
+  parameters;
+  \item \code{AIC} - Akaike's information criterion score;
+  \item \code{p} - list of maximum likelihood parameter estimates;
+  \item \code{m} - list containing matrix representation of fitted model;
+  \item \code{tau} - vector containing characteristic timescales of fitted
+  model;
+  \item \code{T1} - time series of global mean surface temperature used in
+  model fitting;
+  \item \code{N} - time series of top-of-the-atmosphere net downward
+  radiative flux used in model fitting;
+  \item \code{kf} - fitted Kalman filter object (see \code{\link[FKF]{fkf}});
+  \item \code{step} - matrix with k + 1 rows containing expected trajectories
+  of fitted model state variables F, T1, ..., Tk under abrupt 4xCO2 forcing;
+  \item \code{transient} - matrix with k rows containing expected
+  trajectories of box temperatures under a one-percent-per-year increasing
+  CO2 scenario;
+  \item \code{impulse} - matrix with k rows containing expected
+  trajectories of box temperatures under a unit-impulse forcing scenario;
+  \item \code{ECS} - equilibrium climate sensitivity (equilibrium
+  temperature increase after doubling CO2);
+  \item \code{TCR} - transient climate response (temperature increase after
+  70 years of one-percent-per-year increasing CO2).
+}
 }
 \description{
 \code{FitKalman} fits a k-box model to time series of global mean surface
@@ -47,4 +88,7 @@ HadGEM2 <- with(CMIP5$MOHC, {
 
 # print parameter estimates
 print(HadGEM2$p)
+}
+\seealso{
+\code{\link{BuildMatrices}}, \code{\link{SimStepData}}.
 }
