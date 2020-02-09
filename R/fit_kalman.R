@@ -30,6 +30,27 @@
 #' @export
 #'
 #' @examples
+#' # load CMIP5 abrupt 4xCO2 runs
+#' data("CMIP5")
+#'
+#' # set three-box model starting values
+#' inits3 <- list(
+#'   gamma = 2.0,
+#'   C = c(5.0, 20.0, 100.0),
+#'   kappa = c(1.0, 2.0, 1.0),
+#'   epsilon = 1.0,
+#'   sigma_eta = 0.5,
+#'   sigma_xi = 0.5,
+#'   F_4xCO2 = 5.0
+#' )
+#'
+#' # fit three-box model to HadGEM2-ES
+#' HadGEM2 <- with(CMIP5$MOHC, {
+#'   FitKalman(inits = inits3, T1 = temp, N = flux)
+#' })
+#'
+#' # print parameter estimates
+#' print(HadGEM2$p)
 FitKalman <- function(inits, T1, N, maxeval = 1e+05) {
 
   # transform to optimization domain
