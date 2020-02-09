@@ -77,6 +77,36 @@ BuildCd <- function(kappa, epsilon) {
   return(list(Cd = Cd))
 }
 
+#' Building k-box model matrices
+#'
+#' \code{BuildMatrices} takes physical parameters of the differential equations and constructs
+#' continuous- and discrete-time model matrices.
+#'
+#' @param gamma stochastic forcing correlation parameter.
+#' @param C vector of box heat capacities.
+#' @param kappa vector of heat transfer coefficients.
+#' @param epsilon deep ocean heat uptake efficacy factor.
+#' @param sigma_eta stochastic forcing standard deviation parameter.
+#' @param sigma_xi standard deviation of stochastic temperature disturbances.
+#' @return \code{BuildMatrices} returns a list containing k-box model matrices:
+#' A, B, Q, Ad, Bd, Qd, Gamma0, Cd.
+#' @examples # set physical parameters
+#' parameters <- list(
+#'   gamma = 2.2,
+#'   C = c(7.0, 80.0),
+#'   kappa = c(1.2, 0.75),
+#'   epsilon = 1.2,
+#'   sigma_eta = 0.54,
+#'   sigma_xi = 0.72
+#' )
+#'
+#' # build matrices
+#' matrices <- with(parameters, {
+#'   BuildMatrices(gamma, C, kappa, epsilon, sigma_eta, sigma_xi)
+#' })
+#'
+#' # print output
+#' print(matrices)
 BuildMatrices <- function(gamma, C, kappa, epsilon, sigma_eta, sigma_xi) {
   ABQ <- BuildABQ(gamma, C, kappa, epsilon, sigma_eta, sigma_xi)
   AdBdQd <- with(ABQ, BuildAdBdQd(A, B, Q))
