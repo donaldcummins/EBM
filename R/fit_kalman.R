@@ -13,7 +13,24 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-FitKalman <- function(inits, T1, N, maxeval = 100000) {
+#' Fitting k-box models to abrupt 4xCO2 experiments
+#'
+#' \code{FitKalman} fits a k-box model to time series of global mean surface
+#' temperature and top-of-the-atmosphere net downward radiative flux from an
+#' abrupt 4xCO2 climate model experiment. Parameters are estimated using the
+#' Kalman filter and maximum likelihood estimation. Estimated parameters are
+#' returned in a list along with a suite of useful derived quantities.
+#'
+#' @param inits list of parameter starting values.
+#' @param T1 time series of global mean surface temperature.
+#' @param N time series of top-of-the-atmosphere net downward radiative flux.
+#' @param maxeval maximum number of iterations in BOBYQA optimization algorithm.
+#'
+#' @return \code{FitKalman} returns a list containing fitted model output.
+#' @export
+#'
+#' @examples
+FitKalman <- function(inits, T1, N, maxeval = 1e+05) {
 
   # transform to optimization domain
   inits <- Transform(inits)

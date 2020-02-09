@@ -65,6 +65,7 @@ SimStep <- function(Ad, Bd, Qd, Gamma0, F_4xCO2, n) {
 #' @return \code{SimStepData} returns a matrix with two rows containing time
 #' series of global mean surface temperature and top-of-the-atmosphere net
 #' downward radiative flux respectively.
+#' @export
 #'
 #' @examples
 #' # set physical parameters
