@@ -1,0 +1,58 @@
+#' Abrupt 4xCO2 responses of 16 CMIP5 earth system models
+#'
+#' A dataset containing abrupt 4xCO2 responses of 16 earth system models. Data
+#' were produced as part of the fifth phase of the Coupled Model Intercomparison
+#' Project (CMIP5).
+#'
+#' @usage data("CMIP5")
+#'
+#' @format A list containing 16 dataframes, one for each climate model. Each
+#' dataframe contains the following time series:
+#' \itemize{
+#'   \item \code{temp} - global mean surface temperature (K), averaged annually
+#'   in years 1-150 of the abrupt 4xCO2 experiment.
+#'   \item \code{flux} - top-of-the-atmosphere net downward radiative flux
+#'   (W/m2), averaged annually in years 1-150 of the abrupt 4xCO2 experiment.
+#' }
+#' @section Acknowledgements: We thank Olivier Geoffroy for kindly providing
+#' these data.
+#'
+#' We acknowledge the World Climate Research Programme’s Working Group on
+#' Coupled Modelling, which is responsible for CMIP, and we thank the climate
+#' modeling groups for producing and making available their model output. For
+#' CMIP the U.S. Department of Energy’s Program for Climate Model Diagnosis and
+#' Intercomparison provides coordinating support and led development of software
+#' infrastructure in partnership with the Global Organization for Earth System
+#' Science Portals.
+#' @seealso \code{\link{TCR}}
+"CMIP5"
+
+#' One-percent-per-year increasing CO2 responses of 16 CMIP5 earth system models
+#'
+#' A dataset containing one-percent-per-year increasing CO2 responses of 16
+#' earth system models. Data were produced as part of the fifth phase of the
+#' Coupled Model Intercomparison Project (CMIP5).
+#'
+#' @usage data("TCR")
+#'
+#' @format A list containing 16 dataframes, one for each climate model. Each
+#' dataframe contains the following time series:
+#' \itemize{
+#'   \item \code{temp} - global mean surface temperature (K), averaged annually
+#'   in years 1-150 of the one-percent-per-year increasing CO2 experiment.
+#'   \item \code{flux} - top-of-the-atmosphere net downward radiative flux
+#'   (W/m2), averaged annually in years 1-150 of the one-percent-per-year
+#'   increasing CO2 experiment.
+#' }
+#' @section Acknowledgements: We thank Olivier Geoffroy for kindly providing
+#' these data.
+#'
+#' We acknowledge the World Climate Research Programme’s Working Group on
+#' Coupled Modelling, which is responsible for CMIP, and we thank the climate
+#' modeling groups for producing and making available their model output. For
+#' CMIP the U.S. Department of Energy’s Program for Climate Model Diagnosis and
+#' Intercomparison provides coordinating support and led development of software
+#' infrastructure in partnership with the Global Organization for Earth System
+#' Science Portals.
+#' @seealso \code{\link{CMIP5}}
+"TCR"
