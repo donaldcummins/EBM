@@ -35,9 +35,9 @@ StepResponseAnalytic <- function(A, kappa, F_4xCO2, n) {
 SimNoise <- function(Ad, Qd, Gamma0, n) {
   k <- nrow(Ad)
   y <- matrix(0, k, n)
-  y[, 1] <- t(chol(Gamma0)) %*% rnorm(k)
+  y[, 1] <- t(chol(Gamma0)) %*% stats::rnorm(k)
   for (i in 1:(n - 1)) {
-    y[, i + 1] <- Ad %*% y[, i] + t(chol(Qd)) %*% rnorm(k)
+    y[, i + 1] <- Ad %*% y[, i] + t(chol(Qd)) %*% stats::rnorm(k)
   }
   return(y)
 }

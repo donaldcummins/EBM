@@ -130,8 +130,8 @@ FitKalman <- function(inits, T1, N, maxeval = 1e+05) {
 
   # calculate confidence intervals
   confint <- rbind(
-    mle - qnorm(0.975)*se,
-    mle + qnorm(0.975)*se
+    mle - stats::qnorm(0.975)*se,
+    mle + stats::qnorm(0.975)*se
   )
 
   # calculate AIC

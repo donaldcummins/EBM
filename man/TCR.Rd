@@ -4,7 +4,8 @@
 \name{TCR}
 \alias{TCR}
 \title{One-percent-per-year increasing CO2 responses of 16 CMIP5 earth system models}
-\format{A list containing 16 dataframes, one for each climate model. Each
+\format{
+A list containing 16 dataframes, one for each climate model. Each
 dataframe contains the following time series:
 \itemize{
   \item \code{temp} - global mean surface temperature (K), averaged annually
@@ -12,7 +13,8 @@ dataframe contains the following time series:
   \item \code{flux} - top-of-the-atmosphere net downward radiative flux
   (W/m2), averaged annually in years 1-150 of the one-percent-per-year
   increasing CO2 experiment.
-}}
+}
+}
 \usage{
 data("TCR")
 }

@@ -4,14 +4,16 @@
 \name{CMIP5}
 \alias{CMIP5}
 \title{Abrupt 4xCO2 responses of 16 CMIP5 earth system models}
-\format{A list containing 16 dataframes, one for each climate model. Each
+\format{
+A list containing 16 dataframes, one for each climate model. Each
 dataframe contains the following time series:
 \itemize{
   \item \code{temp} - global mean surface temperature (K), averaged annually
   in years 1-150 of the abrupt 4xCO2 experiment.
   \item \code{flux} - top-of-the-atmosphere net downward radiative flux
   (W/m2), averaged annually in years 1-150 of the abrupt 4xCO2 experiment.
-}}
+}
+}
 \usage{
 data("CMIP5")
 }
