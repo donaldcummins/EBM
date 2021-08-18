@@ -1,7 +1,7 @@
 Package: EBM
 Type: Package
 Title: Estimate Parameters of Stochastic Energy Balance Models
-Version: 1.0.0
+Version: 1.1.0
 Authors@R: person("Donald", "Cummins", email = "dc533@exeter.ac.uk",
     role = c("aut", "cre"))
 Description: Functions for maximum likelihood estimation of k-box stochastic
