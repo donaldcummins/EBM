@@ -35,6 +35,7 @@
 #' }
 #' @param T1 time series of global mean surface temperature.
 #' @param N time series of top-of-the-atmosphere net downward radiative flux.
+#' @param alpha quadratic penalty applied to heat capacity of deep-ocean box.
 #' @param maxeval maximum number of iterations in BOBYQA optimization algorithm.
 #'
 #' @return \code{FitKalman} returns a list containing the following elements:
@@ -93,7 +94,7 @@
 #'
 #' # print parameter estimates
 #' print(HadGEM2$p)
-FitKalman <- function(inits, T1, N, maxeval = 1e+05) {
+FitKalman <- function(inits, T1, N, alpha = 0, maxeval = 1e+05) {
 
   # transform to optimization domain
   inits <- Transform(inits)
@@ -104,6 +105,7 @@ FitKalman <- function(inits, T1, N, maxeval = 1e+05) {
     x0 = inits,
     fn = KalmanNegLogLik,
     dataset = dataset,
+    alpha = alpha,
     control = list(maxeval = maxeval))
 
   # check convergence
@@ -122,7 +124,8 @@ FitKalman <- function(inits, T1, N, maxeval = 1e+05) {
   vcov <- solve(numDeriv::hessian(
     func = KalmanNegLogLik,
     x = mle,
-    dataset = dataset
+    dataset = dataset,
+    alpha = alpha
   ))
 
   # calculate standard errors

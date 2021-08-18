@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-KalmanNegLogLik <- function(par, dataset) {
+KalmanNegLogLik <- function(par, dataset, alpha) {
 
   # back-transform parameters
   p <- BackTransform(par)
@@ -24,7 +24,10 @@ KalmanNegLogLik <- function(par, dataset) {
   # run kalman filter
   kf <- with(c(p, m), KalmanFilter(Ad, Bd, Qd, Gamma0, Cd, F_4xCO2, dataset))
 
-  # return negative log-likelihood
-  return(-kf$logLik)
+  # calculate penalty
+  penalty <- alpha*p$C[length(p$C)]^2
+
+  # return (penalized) negative log-likelihood
+  return(-kf$logLik + penalty)
 
 }

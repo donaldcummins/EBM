@@ -4,7 +4,7 @@
 \alias{FitKalman}
 \title{Fitting k-box models to abrupt 4xCO2 experiments}
 \usage{
-FitKalman(inits, T1, N, maxeval = 1e+05)
+FitKalman(inits, T1, N, alpha = 0, maxeval = 1e+05)
 }
 \arguments{
 \item{inits}{list of parameter starting values containing the following
@@ -23,6 +23,8 @@ elements:
 \item{T1}{time series of global mean surface temperature.}
 
 \item{N}{time series of top-of-the-atmosphere net downward radiative flux.}
+
+\item{alpha}{quadratic penalty applied to heat capacity of deep-ocean box.}
 
 \item{maxeval}{maximum number of iterations in BOBYQA optimization algorithm.}
 }
