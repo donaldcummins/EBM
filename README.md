@@ -12,24 +12,22 @@ The EBM package is archived on Zenodo and has its own digital object identifier 
 
 ## Getting started
 
-EBM can be installed directly from GitHub using the [devtools](https://cran.r-project.org/package=devtools) package for R.
+EBM can be installed directly from GitHub using the [remotes](https://cran.r-project.org/package=remotes) package for R.
 
-### Installing devtools
+### Installing remotes
 
-To install devtools from [CRAN](https://cran.r-project.org/), open an R session and run
+To install remotes from [CRAN](https://cran.r-project.org/), open an R session and run
 
 ```
-install.packages("devtools")
+install.packages("remotes")
 ```
-
-If devtools requires compilation on your system this step may take a few minutes.
 
 ### Installing EBM
 
-To install EBM using devtools, run
+To install EBM using remotes, run
 
 ```
-devtools::install_github("donaldcummins/EBM")
+remotes::install_github("donaldcummins/EBM")
 ```
 
 Once installed, EBM can be loaded into an R session using
